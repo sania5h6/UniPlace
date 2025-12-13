@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="p-8 bg-gray-100">
+    <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h1 class="text-3xl font-bold mb-6">Edit Profile</h1>
+        <form action="/profileEdit" method="POST" class="space-y-4">
+            <input type="hidden" name="email" value="<%= email %>">
+            <div>
+                <label class="font-semibold">Name</label>
+                <input type="text" name="name" value="<%= user.name %>" class="w-full p-2 border rounded">
+            </div>
+            <div>
+                <label class="font-semibold">Department</label>
+                <input type="text" name="department" value="<%= user.department %>" class="w-full p-2 border rounded">
+            </div>
+            <div>
+                <label class="font-semibold">Phone</label>
+                <input type="text" name="phone" value="<%= user.phone %>" class="w-full p-2 border rounded">
+            </div>
+            <div>
+                <label class="font-semibold">Skills</label>
+                <textarea name="skills" class="w-full p-2 border rounded h-32"><%= user.skills %></textarea>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="/dashboard?email=<%= email %>" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

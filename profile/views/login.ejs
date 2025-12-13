@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>UniPlace Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --primary-blue: #3A81EC; /* A vibrant yet professional blue */
+            --dark-overlay: rgba(0, 0, 0, 0.75); /* Slightly darker overlay for better contrast */
+            --light-text: #E0E0E0;
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.2);
+            --focus-glow: rgba(58, 129, 236, 0.4);
+            --form-shadow-color: rgba(0, 0, 0, 0.15); /* Slightly lighter shadow for light side */
+            --login-text-color: #2c3e50; /* Dark text for light background */
+            --login-link-color: #3498db; /* Blue for links on light side */
+            --login-button-color: #3498db; /* Blue for button on light side */
+            --login-button-hover-color: #2980b9;
+        }
+
+        /* --- Base Layout & Resets --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Crucial for full-screen split layout */
+        }
+
+        .split-container {
+            display: flex;
+            height: 100vh; /* Full viewport height */
+            width: 100vw; /* Full viewport width */
+            position: relative; /* For cracked wall pseudo-element */
+        }
+
+        /* Cracked Wall Effect */
+        .split-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 60%; /* Position at the split */
+            width: 20px; /* Adjust as needed */
+            height: 100%;
+            background-image: url('http://googleusercontent.com/image_generation_content/0'); /* Cracked wall image */
+            background-size: cover;
+            opacity: 0.7; /* Adjust as needed */
+            z-index: 5; /* Place it between image side and login side */
+            pointer-events: none; /* Make sure it doesn't interfere with clicks */
+        }
+
+        /* --- Image Side (Left Half) --- */
+        .image-side {
+            width: 60%;
+            position: relative;
+            overflow: hidden; /* Prevents overflow from slideshow and initial letter positions */
+            background-color: #000; /* Fallback for smooth transitions */
+        }
+
+        /* --- Slideshow Styling --- */
+        .slideshow-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0; /* Start hidden */
+            animation: slideshow 15s infinite; /* 5 slides * 3s per slide = 15s total cycle */
+        }
+
+        /* Define your 5 new, relevant image URLs here */
+       
+.slideshow-slide:nth-child(1) {
+  background-image: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1600&auto=format&fit=crop');
+  /* Team collaboration / networking */
+  animation-delay: 0s;
+}
+.slideshow-slide:nth-child(2) {
+  background-image: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1600&auto=format&fit=crop');
+  /* Career discussion / placement mentoring */
+  animation-delay: 3s;
+}
+.slideshow-slide:nth-child(3) {
+  background-image: url('https://images.unsplash.com/photo-1556155092-490a1ba16284?q=80&w=1600&auto=format&fit=crop');
+  /* Coding and innovation */
+  animation-delay: 6s;
+}
+.slideshow-slide:nth-child(4) {
+  background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1600&auto=format&fit=crop');
+  /* College students / learning environment */
+  animation-delay: 9s;
+}
+.slideshow-slide:nth-child(5) {
+  background-image: url('https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1600&auto=format&fit=crop');
+  /* Graduation / alumni success */
+  animation-delay: 12s;
+}
+        /* Keyframes for the slideshow */
+        @keyframes slideshow {
+            0%, 100% { opacity: 0; }
+            2% { opacity: 1; }
+            18% { opacity: 1; }
+            20% { opacity: 0; }
+
+            20.1% { opacity: 0; }
+            22% { opacity: 1; }
+            38% { opacity: 1; }
+            40% { opacity: 0; }
+
+            40.1% { opacity: 0; }
+            42% { opacity: 1; }
+            58% { opacity: 1; }
+            60% { opacity: 0; }
+
+            60.1% { opacity: 0; }
+            62% { opacity: 1; }
+            78% { opacity: 1; }
+            80% { opacity: 0; }
+
+            80.1% { opacity: 0; }
+            82% { opacity: 1; }
+            98% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* --- Image Overlay and Animated Text --- */
+        .image-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-overlay);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            z-index: 10;
+            perspective: 1000px;
+            overflow: hidden; /* Important to hide letters initially */
+        }
+
+        /* Container for the animated letters */
+        .image-overlay .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+            display: flex; /* To arrange letters in a row */
+            position: relative;
+            z-index: 1;
+            /* No initial transform here, letters will fly to this centered position */
+        }
+
+        /* Individual letter styling and animation */
+        .image-overlay .logo-text .letter {
+            opacity: 0;
+            display: inline-block; /* Ensure transform applies */
+            text-shadow: 0 0 20px rgba(58, 129, 236, 0.8), 0 0 10px rgba(0,0,0,0.5);
+            animation: flyInAndJump 2.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Longer, bouncy animation */
+            /* Add custom properties for animation delay and initial position for each letter */
+            --initial-x: 0;
+            --initial-y: 0;
+            --initial-rotate: 0deg;
+        }
+
+        /* Staggered animation delay and unique starting points for each letter */
+        .image-overlay .logo-text .letter:nth-child(1) { /* U */
+            animation-delay: 0.1s;
+            --initial-x: -150vw; --initial-y: -150vh; --initial-rotate: 720deg;
+        }
+        .image-overlay .logo-text .letter:nth-child(2) { /* N */
+            animation-delay: 0.3s;
+            --initial-x: 150vw; --initial-y: -100vh; --initial-rotate: -540deg;
+        }
+        .image-overlay .logo-text .letter:nth-child(3) { /* I */
+            animation-delay: 0.5s;
+            --initial-x: -100vw; --initial-y: 150vh; --initial-rotate: 360deg;
+        }
+        .image-overlay .logo-text .letter:nth-child(4) { /* P */
+            animation-delay: 0.7s;
+            --initial-x: 100vw; --initial-y: 150vh; --initial-rotate: -270deg;
+        }
+        .image-overlay .logo-text .letter:nth-child(5) { /* L */
+            animation-delay: 0.9s;
+            --initial-x: -120vw; --initial-y: 0vh; --initial-rotate: 180deg;
+        }
+        .image-overlay .logo-text .letter:nth-child(6) { /* A */
+            animation-delay: 1.1s;
+            --initial-x: 120vw; --initial-y: 0vh; --initial-rotate: -90deg;
+        }
+        .image-overlay .logo-text .letter:nth-child(7) { /* C */
+            animation-delay: 1.3s;
+            --initial-x: 0vw; --initial-y: -180vh; --initial-rotate: 450deg;
+        }
+        .image-overlay .logo-text .letter:nth-child(8) { /* E */
+            animation-delay: 1.5s;
+            --initial-x: 0vw; --initial-y: 180vh; --initial-rotate: -630deg;
+        }
+
+        /* Keyframes for the "fly in and jump" animation */
+        @keyframes flyInAndJump {
+            0% {
+                opacity: 0;
+                transform: translateX(var(--initial-x)) translateY(var(--initial-y)) scale(0.1) rotate(var(--initial-rotate));
+            }
+            70% { /* Nearing the target, slightly overshoot */
+                opacity: 1;
+                transform: translateX(0) translateY(-10px) scale(1.1) rotate(0deg); /* Slight jump up */
+            }
+            100% { /* Settle into final position */
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+                  /* Gold Arrow Symbol */
+                  .image-overlay .logo-text::after {
+                      content: "";
+                      position: absolute;
+                      left: 50%;
+                      transform: translateX(-50%);
+                      bottom: -30px; /* Adjust as needed */
+                      width: 50px; /* Adjust as needed */
+                      height: 30px; /* Adjust as needed */
+                      background-image: url('http://googleusercontent.com/image_generation_content/0'); /* Gold arrow image */
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                      opacity: 0;
+                      animation: fadeInArrow 1.5s forwards ease-out;
+                      animation-delay: 3.5s; /* Appear after letters and slogan */
+                  }
+
+                  @keyframes fadeInArrow {
+                      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+                  }
+        .image-overlay .slogan-text {
+            font-size: 1.5em;
+            color: var(--light-text);
+            font-weight: 300;
+            line-height: 1.5;
+            max-width: 80%;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInSlogan 1.5s forwards ease-out;
+            animation-delay: 2.8s; /* Starts after all letters have settled */
+        }
+
+        @keyframes fadeInSlogan {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Login Side (Right Half) --- */
+        .login-side {
+            width: 40%;
+            background-color: #f7f7f7; /* Light background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            overflow-y: auto; /* Allow scrolling if content is too tall */
+            position: relative; /* For absolute positioning of flying icon */
+        }
+
+         /* Flying Graduation Cap */
+        .login-side i.fas.fa-graduation-cap {
+            position: absolute;
+            top: 50%; /* Center vertically */
+            left: 5%; /* Start from the left side */
+            transform: translateY(-50%);
+            font-size: 2.5em; /* Match the size in the login section */
+            color: var(--login-link-color);
+            z-index: 20; /* Ensure it's above other elements */
+            opacity: 0;
+            animation: flyToImage 2.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Match the letter animation timing */
+            animation-delay: 0s; /* Start with the first letter */
+        }
+
+        @keyframes flyToImage {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(0);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(-50%) translateX(calc(60% - 5%)) scale(1.2); /* Move towards the image side */
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(calc(60% - 5%)) scale(0.1); /* Fade out as it reaches the image */
+            }
+        }
+
+        .login-wrapper {
+            animation: fadeIn 1s ease-out forwards;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px var(--form-shadow-color);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Login side logo/slogan styling */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-section h1 {
+            font-size: 2.5em;
+            color: var(--login-text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            position: relative; /* For absolute positioning of the icon */
+        }
+
+        .logo-section .slogan {
+            font-size: 1em;
+            color: #7f8c8d;
+            font-weight: 400;
+            margin-top: 5px;
+        }
+
+        /* --- Form Elements --- */
+        form input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            background: #fff;
+            color: #333;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+        }
+
+        form input::placeholder {
+            color: #95a5a6;
+        }
+
+        form input:focus {
+            border-color: var(--login-link-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        form button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--login-button-color);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 25px;
+            letter-spacing: 0.7px;
+        }
+
+        form button:hover {
+            background-color: var(--login-button-hover-color);
+            transform: translateY(-2px);
+        }
+
+        form button:active {
+            transform: translateY(0);
+        }
+
+        .login-container a {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: var(--login-link-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .split-container {
+                flex-direction: column;
+            }
+
+            .image-side, .login-side {
+                width: 100%;
+                min-height: 50vh;
+                height: auto;
+            }
+
+            .image-overlay .logo-text {
+                font-size: 3em;
+                transform: translateX(0); /* Ensure letters are centered on small screens */
+            }
+
+            /* Adjust individual letter animation for smaller screens */
+            @keyframes flyInAndJump {
+                0% {
+                    opacity: 0;
+                    transform: translateX(calc(var(--initial-x) * 0.5)) translateY(calc(var(--initial-y) * 0.5)) scale(0.1) rotate(var(--initial-rotate)); /* Reduce initial travel distance */
+                }
+                70% {
+                    opacity: 1;
+                    transform: translateX(0) translateY(-10px) scale(1.1) rotate(0deg);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+                }
+            }
+
+            .image-overlay .slogan-text {
+                font-size: 1.2em;
+                padding: 0 15px;
+            }
+
+            .login-container {
+                padding: 30px 25px;
+                border-radius: 10px;
+                margin: 20px auto;
+            }
+
+            .login-side {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="split-container">
+        <div class="image-side">
+            <div class="slideshow-slide"></div>
+            <div class="slideshow-slide"></div>
+            <div class="slideshow-slide"></div>
+            <div class="slideshow-slide"></div>
+            <div class="slideshow-slide"></div>
+
+            <div class="image-overlay">
+                <div class="logo-text">
+                    <span class="letter">U</span>
+                    <span class="letter">N</span>
+                    <span class="letter">I</span>
+                    <span class="letter">P</span>
+                    <span class="letter">L</span>
+                    <span class="letter">A</span>
+                    <span class="letter">C</span>
+                    <span class="letter">E</span>
+                </div>
+                 <div class="slogan-text">Your Professional Gateway to Opportunities</div>
+            </div>
+        </div>
+
+        <div class="login-side">
+            <i class="fas fa-graduation-cap"></i> <div class="login-wrapper">
+                <div class="login-container">
+                    <div class="logo-section">
+                        <h1><i class="fas fa-graduation-cap"></i> UniPlace</h1>
+                        <div class="slogan">Empowering Students for a Brighter Future</div>
+                    </div>
+                    <form action="/login" method="POST">
+                        <input type="email" name="email" placeholder="Email (@gcet.edu.in)" required pattern=".+@gcet\.edu\.in" title="Please use your GCET email address." />
+                        <input type="password" name="password" placeholder="Password" required />
+                        <button type="submit">Unlock Your Future</button>
+                    </form>
+                    <a href="/reset">Forgot Password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

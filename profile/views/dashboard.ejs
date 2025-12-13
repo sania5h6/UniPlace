@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPlace Dashboard - Visionary Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e6eef7 100%);
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><g opacity=".1"><path d="M100 0L50 50l50 50 50-50zM0 100l50 50 50-50-50-50zM100 100l50 50 50-50-50-50zM0 0l50 50 50-50-50-50zM150 0l50 50 50-50-50-50zM50 150l50 50 50-50-50-50zM100 150l50 50 50-50-50-50zM0 200l50 50 50-50-50-50zM150 150l50 50 50-50-50-50z" fill="%23cbd5e1"/><circle cx="100" cy="100" r="10" fill="%239ca3af"/><circle cx="50" cy="50" r="10" fill="%239ca3af"/><circle cx="150" cy="50" r="10" fill="%239ca3af"/><circle cx="50" cy="150" r="10" fill="%239ca3af"/><circle cx="150" cy="150" r="10" fill="%239ca3af"/></g></svg>');
+            background-size: 150px;
+            background-repeat: repeat;
+            opacity: 0.1;
+            z-index: -1;
+            animation: backgroundPan 60s linear infinite;
+        }
+
+        @keyframes backgroundPan {
+            from { background-position: 0% 0%; }
+            to { background-position: 200% 200%; }
+        }
+
+        .section {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #4a5568;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(to right, #4a90e2, #8e44ad) 1;
+            padding-bottom: 1.2rem;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(to right, #e24a90, #ad448e);
+            transition: width 0.3s ease-out;
+        }
+
+        .section:hover h2::after {
+            width: 100%;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, var(--tw-gradient-stops));
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            color: #fff;
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 500;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card span {
+            display: block;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            line-height: 1;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification {
+            background: linear-gradient(to right, #e0f2f7, #c6e7f2);
+            border-left: 6px solid;
+            border-image: linear-gradient(to bottom, #3498db, #2980b9) 1;
+            border-radius: 0.75rem;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .notification:hover {
+            transform: scale(1.01);
+        }
+
+        .notification h3 {
+            color: #1a5276;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .notification p {
+            color: #4a677a;
+            line-height: 1.6;
+        }
+
+        .post-form input[type="text"],
+        .post-form input[type="date"],
+        .post-form textarea {
+            border: 1px solid #d1d8df;
+            border-radius: 0.6rem;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: #fcfdfe;
+        }
+
+        .post-form input[type="text"]:focus,
+        .post-form input[type="date"]:focus,
+        .post-form textarea:focus {
+            outline: none;
+            border-color: #7a8efc;
+            box-shadow: 0 0 0 3px rgba(122, 142, 252, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            padding: 0.8rem 2.2rem;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease-in-out;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #2575fc 0%, #6a11cb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #1abc9c 0%, #16a085 100%);
+            border: none;
+            padding: 0.8rem 2.2rem;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease-in-out;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #16a085 0%, #1abc9c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-button {
+            background: linear-gradient(45deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .admin-button:hover {
+            background: linear-gradient(45deg, #c0392b 0%, #e74c3c 100%);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        ::placeholder {
+            color: #9aa5b1;
+            opacity: 1;
+        }
+
+        .category-header {
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .category-header .category-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #556270);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+            display: inline-block;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+        }
+
+        .section.category-entry-section:hover .category-icon {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+        }
+
+        .category-tagline {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            color: #6d6d6d;
+            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+            text-align: center;
+            line-height: 1.4;
+            padding: 0 1rem;
+        }
+
+        #profile-menu {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-button, .dark-mode-button {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1D2671 0%, #C33764 100%);
+            color: white;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+            border: 2px solid transparent;
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        .profile-button:hover, .dark-mode-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            animation: none;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(195, 55, 100, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(195, 55, 100, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(195, 55, 100, 0); }
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 0;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-dropdown.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .profile-dropdown a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: #4a5568;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: #f0f4f8;
+            color: #2575fc;
+        }
+
+        .profile-dropdown a .fa-fw {
+            margin-right: 0.75rem;
+            width: 1.25rem;
+            text-align: center;
+            color: #8e44ad;
+            transition: color 0.2s ease;
+        }
+
+        .profile-dropdown a:hover .fa-fw {
+            color: #2575fc;
+        }
+
+        .profile-dropdown li:last-child a {
+            border-top: 1px solid #e2e8f0;
+            color: #e74c3c;
+        }
+        .profile-dropdown li:last-child a .fa-fw {
+            color: #e74c3c;
+        }
+        .profile-dropdown li:last-child a:hover {
+            background-color: #fcebeb;
+            color: #c0392b;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: #e2e8f0;
+        }
+
+        body.dark-mode::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><g opacity=".05"><path d="M100 0L50 50l50 50 50-50zM0 100l50 50 50-50-50-50zM100 100l50 50 50-50-50-50zM0 0l50 50 50-50-50-50zM150 0l50 50 50-50-50-50zM50 150l50 50 50-50-50-50zM100 150l50 50 50-50-50-50zM0 200l50 50 50-50-50-50zM150 150l50 50 50-50-50-50z" fill="%234a5568"/><circle cx="100" cy="100" r="10" fill="%236b7280"/><circle cx="50" cy="50" r="10" fill="%236b7280"/><circle cx="150" cy="50" r="10" fill="%236b7280"/><circle cx="50" cy="150" r="10" fill="%236b7280"/><circle cx="150" cy="150" r="10" fill="%236b7280"/></g></svg>');
+            opacity: 0.05;
+        }
+
+        body.dark-mode .section {
+            background-color: #2d3748;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .section:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode h1 {
+            background: linear-gradient(45deg, #a78bfa 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.dark-mode h2 {
+            color: #cbd5e0;
+            border-image: linear-gradient(to right, #6366f1, #a78bfa) 1;
+        }
+
+        body.dark-mode h2::after {
+            background: linear-gradient(to right, #f87171, #fca5a5);
+        }
+
+        body.dark-mode .stat-card {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .stat-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .notification {
+            background: linear-gradient(to right, #2a4365, #2c5282);
+            border-image: linear-gradient(to bottom, #4299e1, #3182ce) 1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .notification h3 {
+            color: #90cdf4;
+        }
+
+        body.dark-mode .notification p {
+            color: #a0aec0;
+        }
+
+        body.dark-mode .post-form input[type="text"],
+        body.dark-mode .post-form input[type="date"],
+        body.dark-mode .post-form textarea {
+            border: 1px solid #4a5568;
+            background-color: #2d3748;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .post-form input[type="text"]:focus,
+        body.dark-mode .post-form input[type="date"]:focus,
+        body.dark-mode .post-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+
+        body.dark-mode ::placeholder {
+            color: #a0aec0;
+        }
+
+        body.dark-mode .btn-primary {
+            background: linear-gradient(45deg, #a78bfa 0%, #6366f1 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .btn-primary:hover {
+            background: linear-gradient(45deg, #6366f1 0%, #a78bfa 100%);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .btn-secondary {
+            background: linear-gradient(45deg, #38b2ac 0%, #319795 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            background: linear-gradient(45deg, #319795 0%, #38b2ac 100%);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .admin-button {
+            background: linear-gradient(45deg, #f56565 0%, #e53e3e 100%);
+            box-shadow: 0 6px 15px rgba(245, 101, 101, 0.3);
+        }
+
+        body.dark-mode .admin-button:hover {
+            background: linear-gradient(45deg, #e53e3e 0%, #f56565 100%);
+            box-shadow: 0 8px 20px rgba(245, 101, 101, 0.4);
+        }
+
+        body.dark-mode .category-header .category-icon {
+            background: linear-gradient(45deg, #fbd38d, #f6ad55);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+
+        body.dark-mode .section.category-entry-section:hover .category-icon {
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+        }
+
+        body.dark-mode .category-tagline {
+            color: #a0aec0;
+        }
+
+        body.dark-mode .profile-dropdown {
+            background-color: #2d3748;
+            border: 1px solid #4a5568;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .profile-dropdown a {
+            color: #cbd5e0;
+        }
+
+        body.dark-mode .profile-dropdown a:hover {
+            background-color: #4a5568;
+            color: #90cdf4;
+        }
+
+        body.dark-mode .profile-dropdown a .fa-fw {
+            color: #a78bfa;
+        }
+
+        body.dark-mode .profile-dropdown a:hover .fa-fw {
+            color: #90cdf4;
+        }
+
+        body.dark-mode .profile-dropdown li:last-child a {
+            border-top: 1px solid #4a5568;
+            color: #f56565;
+        }
+        body.dark-mode .profile-dropdown li:last-child a .fa-fw {
+            color: #f56565;
+        }
+        body.dark-mode .profile-dropdown li:last-child a:hover {
+            background-color: #6b4d4d;
+            color: #e53e3e;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #a0aec0;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: #e74c3c;
+        }
+
+        .modal-content h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            border-bottom: 2px solid #a0aec0;
+            padding-bottom: 0.5rem;
+        }
+
+        .modal-content p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        body.dark-mode .modal-content {
+            background-color: #2d3748;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .modal-close {
+            color: #a0aec0;
+        }
+
+        body.dark-mode .modal-close:hover {
+            color: #f56565;
+        }
+
+        body.dark-mode .modal-content h3 {
+            color: #cbd5e0;
+            border-bottom-color: #4a5568;
+        }
+
+        body.dark-mode .modal-content p {
+            color: #a0aec0;
+        }
+
+        .modal-content .modal-form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal-content .modal-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        body.dark-mode .modal-content .modal-form-group label {
+            color: #e2e8f0;
+        }
+
+        .modal-content .modal-form-group input[type="text"],
+        .modal-content .modal-form-group input[type="email"],
+        .modal-content .modal-form-group input[type="password"],
+        .modal-content .modal-form-group input[type="tel"],
+        .modal-content .modal-form-group input[type="file"],
+        .modal-content .modal-form-group select,
+        .modal-content .modal-form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #d1d8df;
+            border-radius: 0.5rem;
+            background-color: #fcfdfe;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark-mode .modal-content .modal-form-group input,
+        body.dark-mode .modal-content .modal-form-group select,
+        body.dark-mode .modal-content .modal-form-group textarea {
+            background-color: #2d3748;
+            border-color: #4a5568;
+            color: #e2e8f0;
+        }
+
+        .modal-content .modal-form-group input:focus,
+        .modal-content .modal-form-group select:focus,
+        .modal-content .modal-form-group textarea:focus {
+            outline: none;
+            border-color: #7a8efc;
+            box-shadow: 0 0 0 3px rgba(122, 142, 252, 0.2);
+        }
+        body.dark-mode .modal-content .modal-form-group input:focus,
+        body.dark-mode .modal-content .modal-form-group select:focus,
+        body.dark-mode .modal-content .modal-form-group textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-content .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .profile-info-box {
+            background: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .profile-info-box {
+            background: #1a202c;
+        }
+
+        .profile-info-box h4 {
+            color: #6a11cb;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        body.dark-mode .profile-info-box h4 {
+            color: #a78bfa;
+        }
+
+        .profile-info-box p {
+            margin: 0.5rem 0;
+            color: #555;
+        }
+
+        body.dark-mode .profile-info-box p {
+            color: #cbd5e0;
+        }
+
+        .profile-info-box strong {
+            color: #333;
+        }
+
+        body.dark-mode .profile-info-box strong {
+            color: #e2e8f0;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .checkbox-wrapper label {
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8">
+
+    <div class="max-w-7xl mx-auto z-10 relative">
+        <div id="profile-menu">
+            <button class="dark-mode-button" id="darkModeToggle" aria-label="Toggle Dark Mode">
+                <i class="fas fa-moon" id="darkModeIcon"></i>
+            </button>
+            <button class="profile-button" id="profileButton" aria-label="Profile Menu">
+                <i class="fas fa-user-circle"></i>
+            </button>
+            <ul class="profile-dropdown" id="profileDropdown">
+                <li><a href="javascript:void(0);" data-modal-target="viewProfileModal"><i class="fas fa-user-tie fa-fw"></i> View Profile</a></li>
+                <li><a href="javascript:void(0);" data-modal-target="editProfileModal"><i class="fas fa-user-edit fa-fw"></i> Edit Profile</a></li>
+                <li><a href="javascript:void(0);" data-modal-target="accountSettingsModal"><i class="fas fa-cog fa-fw"></i> Account Settings</a></li>
+                <li><a href="javascript:void(0);" data-modal-target="myNetworkModal"><i class="fas fa-users fa-fw"></i> My Network</a></li>
+                <li><a href="javascript:void(0);" data-modal-target="helpSupportModal"><i class="fas fa-question-circle fa-fw"></i> Help & Support</a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a></li>
+            </ul>
+        </div>
+        <h1 class="text-5xl sm:text-6xl font-extrabold text-center mb-12 leading-tight">
+            WELCOME TO UNIPLACE 
+        </h1>
+
+        <% if (isCurrentUserAdmin) { %>
+            <div class="text-center mb-12">
+                <a href="/admin/notifications/create?email=<%= email %>"
+                   class="inline-block text-white font-semibold py-3.5 px-10 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-400 focus:ring-opacity-50 admin-button">
+                    <i class="fas fa-bullhorn mr-3"></i> Post New Placement Notification
+                </a>
+            </div>
+        <% } %>
+
+        <div class="section mb-10">
+            <h2 class="text-3xl sm:text-4xl">
+                <i class="fas fa-chart-line mr-3 opacity-80"></i> Students' Progress Overview
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-gray-600">
+                <div class="stat-card from-blue-500 to-blue-700">
+                    Total Users <span><%= stats.total %></span>
+                </div>
+                <div class="stat-card from-green-500 to-green-700">
+                    Profiles Completed <span><%= stats.completed %></span>
+                </div>
+                <div class="stat-card from-yellow-500 to-yellow-700">
+                    Questions Answered <span><%= stats.answered %></span>
+                </div>
+                <div class="stat-card from-purple-500 to-purple-700">
+                    Resumes Uploaded <span><%= stats.uploaded %></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section mb-10">
+            <h2 class="text-3xl sm:text-4xl">
+                <i class="fas fa-bell mr-3 opacity-80"></i> Latest Placement Notification
+            </h2>
+
+            <% if (latestNotification) { %>
+                <div class="notification">
+                    <h3 class="text-xl font-semibold"><%= latestNotification.title %> - <%= latestNotification.company %></h3>
+                    <p><strong>Domain:</strong> <%= latestNotification.domain %></p>
+                    <p class="text-gray-700 leading-relaxed mt-2"><%= latestNotification.description %></p>
+                    <span class="text-sm text-gray-500 block text-right mt-3">
+                        <i class="far fa-clock mr-1"></i> Posted <%= latestNotification.timeAgo %>
+                    </span>
+                </div>
+            <% } else { %>
+                <p class="text-gray-500 italic text-center py-6 text-lg">No placement notifications available at the moment. Stay tuned!</p>
+            <% } %>
+
+            <div class="mt-6 text-right">
+                <a href="/notifications?email=<%= email %>" class="btn btn-link">🔍 View All Notifications</a>
+            </div>
+            <% if (isCurrentUserAdmin) { %>
+            <div class="admin-tools mt-4">
+                <h3>⚙ Admin Tools</h3>
+                <a href="/admin/delete-posts?email=<%= email %>" class="btn btn-danger">
+                🗑 Delete Posts
+                </a>
+            </div>
+            <% } %>
+        </div>
+
+        <%
+            const categories = [
+                { key: 'internship', label: '📝 Post Internship', icon: 'fas fa-briefcase', description: 'Your Gateway to Experience' },
+                { key: 'job', label: '💼 Job Radar – Alumni Vacancy Board', icon: 'fas fa-search-dollar', description: 'Connect to Your Future Career' },
+                { key: 'tip', label: '🧠 Interview Wisdom – Tips from Seniors', icon: 'fas fa-lightbulb', description: 'Unlock Your Potential' },
+                { key: 'story', label: '📖 Success Stories', icon: 'fas fa-trophy', description: 'Inspire Your Journey' },
+                { key: 'question', label: '💬 Mentorship Corner – Ask a Senior', icon: 'fas fa-question-circle', description: 'Grow with Guidance' }
+            ];
+        %>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <% categories.forEach(cat => { %>
+                <div class="section category-entry-section">
+                    <h2 class="text-3xl sm:text-4xl category-header">
+                        <i class="<%= cat.icon %> mr-3 category-icon"></i> <%= cat.label %>
+                    </h2>
+                    <p class="category-tagline text-lg">
+                        <%= cat.description %>
+                    </p>
+                    <div class="flex flex-col gap-5">
+                        <form action="/post" method="POST" class="post-form space-y-4">
+                            <input type="hidden" name="type" value="<%= cat.key %>">
+                            <input type="hidden" name="email" value="<%= email %>">
+
+                            <input type="text" name="title" placeholder="Title" required class="w-full">
+
+                            <% if (cat.key === 'internship' || cat.key === 'job') { %>
+                                <input type="text" name="company" placeholder="Company Name" required class="w-full">
+                                <input type="text" name="domain" placeholder="Domain (e.g., Tech, Marketing)" required class="w-full">
+                                <input type="date" name="date" required class="w-full">
+                            <% } %>
+
+                            <textarea name="content" placeholder="<%= cat.label %> content..." required class="w-full h-40 resize-y"></textarea>
+
+                            <div class="flex justify-between items-center mt-5">
+                                <button type="submit" class="text-white btn-primary">
+                                    <i class="fas fa-paper-plane mr-2"></i> Post
+                                </button>
+                                <a href="/posts/<%= cat.key %>?email=<%= email %>" class="text-white btn-secondary">
+                                    <i class="fas fa-eye mr-2"></i> View All Posts
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <% if (!posts[cat.key] || posts[cat.key].length === 0) { %>
+                        <p class="text-gray-500 italic text-center py-6 text-md">No posts in this category yet. Be the first to share!</p>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <!-- View Profile Modal -->
+    <div class="modal-overlay" id="viewProfileModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close><i class="fas fa-times"></i></button>
+            <h3><i class="fas fa-user-tie"></i> My Profile</h3>
+            
+            <div class="profile-info-box">
+                <h4>Personal Information</h4>
+                <p><strong>Name:</strong> <%= user.profile?.firstName || 'Not provided' %> <%= user.profile?.lastName || '' %></p>
+                <p><strong>Email:</strong> <%= email %></p>
+                <p><strong>Phone:</strong> <%= user.profile?.phone || 'Not provided' %></p>
+                <p><strong>Branch:</strong> <%= user.profile?.branch || 'Not provided' %></p>
+                <p><strong>Year:</strong> <%= user.profile?.year || 'Not provided' %></p>
+            </div>
+
+            <div class="profile-info-box">
+                <h4>About Me</h4>
+                <p><%= user.profile?.bio || 'No bio added yet.' %></p>
+            </div>
+
+            <div class="profile-info-box">
+                <h4>Skills</h4>
+                <p><%= user.profile?.skills?.join(', ') || 'No skills added yet.' %></p>
+            </div>
+
+            <% if (user.profile?.resumePath) { %>
+            <div class="profile-info-box">
+                <h4>Resume</h4>
+                <a href="/uploads/<%= user.profile.resumePath %>" target="_blank" class="btn-primary" style="display: inline-block; text-decoration: none;">
+                    <i class="fas fa-file-pdf"></i> View Resume
+                </a>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close><i class="fas fa-times"></i></button>
+            <h3><i class="fas fa-user-edit"></i> Edit Profile</h3>
+            
+            <form action="/updateProfile" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="email" value="<%= email %>">
+                
+                <div class="modal-form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" value="<%= user.profile?.firstName || '' %>" required>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" value="<%= user.profile?.lastName || '' %>" required>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" value="<%= user.profile?.phone || '' %>" required>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="branch">Branch</label>
+                    <select id="branch" name="branch" required>
+                        <option value="">Select Branch</option>
+                        <option value="CSE" <%= user.profile?.branch === 'CSE' ? 'selected' : '' %>>Computer Science</option>
+                        <option value="ECE" <%= user.profile?.branch === 'ECE' ? 'selected' : '' %>>Electronics</option>
+                        <option value="EEE" <%= user.profile?.branch === 'EEE' ? 'selected' : '' %>>Electrical</option>
+                        <option value="MECH" <%= user.profile?.branch === 'MECH' ? 'selected' : '' %>>Mechanical</option>
+                        <option value="CIVIL" <%= user.profile?.branch === 'CIVIL' ? 'selected' : '' %>>Civil</option>
+                    </select>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="year">Year</label>
+                    <select id="year" name="year" required>
+                        <option value="">Select Year</option>
+                        <option value="1" <%= user.profile?.year === '1' ? 'selected' : '' %>>1st Year</option>
+                        <option value="2" <%= user.profile?.year === '2' ? 'selected' : '' %>>2nd Year</option>
+                        <option value="3" <%= user.profile?.year === '3' ? 'selected' : '' %>>3rd Year</option>
+                        <option value="4" <%= user.profile?.year === '4' ? 'selected' : '' %>>4th Year</option>
+                    </select>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="skills">Skills (comma separated)</label>
+                    <input type="text" id="skills" name="skills" value="<%= user.profile?.skills?.join(', ') || '' %>" placeholder="e.g., JavaScript, Python, React">
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" placeholder="Tell us about yourself..."><%= user.profile?.bio || '' %></textarea>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="resume">Upload Resume (PDF)</label>
+                    <input type="file" id="resume" name="resume" accept=".pdf">
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Account Settings Modal -->
+    <div class="modal-overlay" id="accountSettingsModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close><i class="fas fa-times"></i></button>
+            <h3><i class="fas fa-cog"></i> Account Settings</h3>
+            
+            <form action="/update-account-settings" method="POST">
+                <input type="hidden" name="email" value="<%= email %>">
+                
+                <div class="modal-form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password">
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password (min 6 characters)">
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+                </div>
+
+                <div class="modal-form-group">
+                    <h4 style="margin-bottom: 1rem; color: #6a11cb; font-weight: 600;">Notification Preferences</h4>
+                    
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="emailNotifications" name="emailNotifications" <%= user.emailNotifications ? 'checked' : '' %>>
+                        <label for="emailNotifications">Email Notifications</label>
+                    </div>
+
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="placementAlerts" name="placementAlerts" <%= user.placementAlerts ? 'checked' : '' %>>
+                        <label for="placementAlerts">Placement Alerts</label>
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Update Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- My Network Modal -->
+    <div class="modal-overlay" id="myNetworkModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close><i class="fas fa-times"></i></button>
+            <h3><i class="fas fa-users"></i> My Network</h3>
+            
+            <div class="profile-info-box" style="text-align: center;">
+                <p style="font-size: 3rem; margin-bottom: 1rem;">🚧</p>
+                <h4 style="color: #6a11cb; margin-bottom: 1rem;">Coming Soon!</h4>
+                <p style="line-height: 1.8;">
+                    Connect with your peers, seniors, and alumni. This feature will be available soon to help you build your professional network within UniPlace.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help & Support Modal -->
+    <div class="modal-overlay" id="helpSupportModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close><i class="fas fa-times"></i></button>
+            <h3><i class="fas fa-question-circle"></i> Help & Support</h3>
+            
+            <div class="profile-info-box">
+                <h4>Frequently Asked Questions</h4>
+                <p><strong>Q: How do I update my profile?</strong></p>
+                <p style="margin-bottom: 1rem;">A: Click on the profile icon and select "Edit Profile" from the dropdown menu.</p>
+                
+                <p><strong>Q: How do I post an internship or job?</strong></p>
+                <p style="margin-bottom: 1rem;">A: Scroll down to the respective section on the dashboard and fill in the post form.</p>
+                
+                <p><strong>Q: Who can see my posts?</strong></p>
+                <p>A: All registered users of UniPlace can view your posts.</p>
+            </div>
+
+            <div class="profile-info-box">
+                <h4>Contact Support</h4>
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> support@uniplace.edu</p>
+                <p><i class="fas fa-phone"></i> <strong>Phone:</strong> +91 1234567890</p>
+            </div>
+
+            <div class="profile-info-box">
+                <h4>Report an Issue</h4>
+                <p>If you encounter any problems, please email us with a detailed description of the issue and we'll get back to you as soon as possible.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const profileButton = document.getElementById('profileButton');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeIcon = document.getElementById('darkModeIcon');
+        const body = document.body;
+
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeIcon.classList.remove('fa-sun');
+                darkModeIcon.classList.add('fa-moon');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                body.classList.add('dark-mode');
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun');
+            }
+        });
+
+        profileButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.remove('active');
+            }
+        });
+
+        const modalLinks = document.querySelectorAll('[data-modal-target]');
+        const modalCloseButtons = document.querySelectorAll('[data-modal-close]');
+        const modalOverlays = document.querySelectorAll('.modal-overlay');
+
+        modalLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                profileDropdown.classList.remove('active');
+                const modalId = link.dataset.modalTarget;
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('active');
+                    body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        modalCloseButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = button.closest('.modal-overlay');
+                if (modal) {
+                    modal.classList.remove('active');
+                    body.style.overflow = '';
+                }
+            });
+        });
+
+        modalOverlays.forEach(overlay => {
+            overlay.addEventListener('click', (event) => {
+                if (event.target === overlay) {
+                    overlay.classList.remove('active');
+                    body.style.overflow = '';
+                }
+            });   
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

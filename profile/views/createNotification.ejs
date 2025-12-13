@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post Placement Notification</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>📢 Post a New Placement Notification</h2>
+    <form action="/admin/notifications/create" method="POST">
+      <input type="hidden" name="email" value="<%= email %>" />
+
+      <div>
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" required>
+      </div>
+
+      <div>
+        <label for="company">Company Name:</label>
+        <input type="text" name="company" id="company" required>
+      </div>
+
+      <div>
+        <label for="domain">Domain/Role:</label>
+        <input type="text" name="domain" id="domain" required>
+      </div>
+
+      <div>
+        <label for="date">Date of Drive:</label>
+        <input type="date" name="date" id="date">
+      </div>
+
+      <div>
+        <label for="description">Additional Info:</label><br>
+        <textarea name="description" id="description" rows="5" cols="50" required></textarea>
+      </div>
+
+      <button type="submit">✅ Post Notification</button>
+    </form>
+
+    <p><a href="/dashboard?email=<%= email %>&isAdmin=true">⬅ Back to Dashboard</a></p>
+  </div>
+</body>
+</html>

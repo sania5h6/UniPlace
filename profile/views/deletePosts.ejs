@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Delete Posts | UniPlace</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-900">
+  <div class="max-w-4xl mx-auto py-10 px-6">
+    <div class="bg-white shadow-lg rounded-2xl p-6">
+      <h1 class="text-2xl font-bold text-red-600 mb-2">🗑️ Delete Posts</h1>
+      <p class="text-gray-600 mb-6">Logged in as: <span class="font-semibold"><%= email %></span></p>
+
+      <!-- Bulk Delete -->
+      <div class="mb-8">
+        <h2 class="text-lg font-semibold text-gray-800 mb-2">Bulk Delete</h2>
+        <form action="/admin/delete-posts/bulk" method="POST" class="flex items-center gap-4">
+          <input type="hidden" name="email" value="<%= email %>">
+          <select name="period" class="px-3 py-2 border rounded-lg focus:ring focus:ring-red-300">
+            <option value="1">Older than 1 month</option>
+            <option value="3">Older than 3 months</option>
+            <option value="6">Older than 6 months</option>
+          </select>
+          <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow">
+            Delete
+          </button>
+        </form>
+      </div>
+
+      <!-- Single Post Delete -->
+      <div>
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">All Posts</h2>
+        <% if (posts.length === 0) { %>
+          <p class="text-gray-500">No posts available.</p>
+        <% } else { %>
+          <ul class="space-y-4">
+            <% posts.forEach(post => { %>
+              <li class="flex items-center justify-between bg-gray-50 p-4 rounded-xl shadow">
+                <div>
+                  <p class="font-semibold text-gray-800"><%= post.title %></p>
+                  <p class="text-sm text-gray-500"><%= post.type %> • <%= post.timeAgo %></p>
+                </div>
+                <form action="/admin/delete-posts/single" method="POST">
+                  <input type="hidden" name="email" value="<%= email %>">
+                  <input type="hidden" name="postId" value="<%= post._id %>">
+                  <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg shadow">
+                    ❌ Delete
+                  </button>
+                </form>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+
+      <!-- Back Button -->
+      <div class="mt-8">
+        <a href="/dashboard?email=<%= email %>" class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg shadow">
+          ⬅ Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

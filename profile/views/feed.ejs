@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Placement Feed</title>
+</head>
+<body>
+  <h2>Placement Experience Feed</h2>
+  <% for (let question in questionMap) { %>
+    <h3><%= question %></h3>
+    <ul>
+      <% questionMap[question].forEach(ans => { %>
+        <li>
+          <p><%= ans.answer %></p>
+          <small>By: <%= ans.userEmail %>, <%= ans.timeAgo %></small>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+  <br>
+  <a href="/logout">Logout</a>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UniPlace - <%= type.charAt(0).toUpperCase() + type.slice(1) %> Posts</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
+    h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+    .post {
+      background-color: #ffffff;
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .post + .post { margin-top: 30px; }
+
+    .post strong { color: #34495e; font-size: 1.2em; }
+    .post em { color: #7f8c8d; font-size: 0.9em; display: block; margin-bottom: 5px; }
+    .post p { line-height: 1.6; margin-top: 10px; }
+    .timestamp { color: #95a5a6; font-size: 0.8em; display: block; margin-top: 10px; text-align: right; }
+
+    .back-link {
+      margin-bottom: 25px;
+      display: inline-block;
+      text-decoration: none;
+      color: #3498db;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.2s ease;
+    }
+    .back-link:hover {
+      background-color: #ecf0f1;
+    }
+
+    /* Comment Section Styles (Top-level comments) */
+    .comments-section {
+      margin-top: 20px;
+      border-top: 1px dashed #bdc3c7;
+      padding-top: 15px;
+      background-color: #fcfcfc;
+      border-radius: 8px;
+      padding: 15px;
+      display: none; /* Initially hide all comment sections */
+    }
+    .comments-section h4 { color: #34495e; margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+
+    /* Individual Top-level Comment */
+    .comment {
+      margin-top: 12px;
+      padding: 10px;
+      background-color: #e8f4fd; /* Light blue for comments */
+      border-left: 4px solid #3498db; /* Blue accent bar */
+      border-radius: 6px;
+      font-size: 0.9em;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      position: relative; /* For reply form positioning */
+    }
+    .comment + .comment { margin-top: 15px; }
+    .comment-meta { font-weight: bold; color: #2980b9; margin-bottom: 3px; }
+    .comment-text { margin-bottom: 5px; line-height: 1.5; }
+    .comment-timestamp { font-size: 0.75em; color: #7f8c8d; text-align: right; }
+
+    /* Nested Replies Section */
+    .replies-section {
+      margin-top: 10px;
+      padding-left: 20px; /* Indent nested replies */
+      border-left: 1px dashed #ccc; /* Visual line for nesting */
+      display: none; /* Initially hide nested replies */
+    }
+    .reply {
+      margin-top: 8px;
+      padding: 8px;
+      background-color: #f0f8ff; /* Lighter background for nested replies */
+      border-left: 3px solid #6c757d; /* Gray accent for nested replies */
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+    .reply-meta { font-weight: bold; color: #555; margin-bottom: 3px; }
+    .reply-text { margin-bottom: 5px; }
+    .reply-timestamp { font-size: 0.7em; color: #888; text-align: right; }
+
+
+    /* Reply Form Styles (for both comments and nested replies) */
+    .reply-form {
+      margin-top: 10px;
+      padding-top: 5px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .reply-form textarea {
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: vertical;
+      min-height: 60px;
+      font-family: Arial, sans-serif;
+      font-size: 0.95em;
+    }
+    .reply-form button {
+      padding: 10px 20px;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.2s ease;
+    }
+    .reply-form button:hover {
+      background-color: #27ae60;
+    }
+
+    /* Styles for the Replies toggle buttons/links */
+    .replies-toggle, .nested-replies-toggle {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #3498db;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .replies-toggle:hover, .nested-replies-toggle:hover {
+      text-decoration: underline;
+    }
+    .replies-toggle .arrow, .nested-replies-toggle .arrow {
+      margin-left: 5px;
+      transition: transform 0.2s ease-in-out;
+      display: inline-block;
+    }
+    .replies-toggle .arrow.up, .nested-replies-toggle .arrow.up {
+      transform: rotate(180deg);
+    }
+    /* Style for the "Reply" button on a comment */
+    .reply-to-comment-btn {
+      background: none;
+      border: none;
+      color: #3498db;
+      cursor: pointer;
+      font-size: 0.85em;
+      margin-left: 10px;
+      padding: 0;
+      text-decoration: underline;
+    }
+    .reply-to-comment-btn:hover {
+      color: #2980b9;
+    }
+    .nested-reply-form {
+      display: none; /* Initially hide nested reply forms */
+      margin-top: 10px;
+      border-top: 1px dashed #eee;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <a href="/dashboard?email=<%= email %>" class="back-link">&laquo; Back to Dashboard</a>
+  <h1>All <%= type.charAt(0).toUpperCase() + type.slice(1) %> Posts</h1>
+
+  <% if (posts && posts.length > 0) { %>
+    <div>
+      <% posts.forEach(p => { %>
+        <div class="post">
+          <strong><%= p.title %></strong> by <%= p.postedBy %><br>
+          <% if (p.company) { %>
+            <em><%= p.company %> | <%= p.domain %> | <%= p.date %></em><br>
+          <% } %>
+          <p><%= p.content %></p>
+          <span class="timestamp">Posted <%= p.timeAgo %></span>
+
+          <a href="javascript:void(0);" class="replies-toggle" data-target-id="comments-<%= p._id %>">
+            Comments (<%= p.comments ? p.comments.length : 0 %>)
+            <span class="arrow">▼</span>
+          </a>
+
+          <div id="comments-<%= p._id %>" class="comments-section">
+            <h4>Comments:</h4>
+            <% if (p.comments && p.comments.length > 0) { %>
+              <% p.comments.forEach(comment => { %>
+                <div class="comment">
+                  <div class="comment-meta"><%= comment.postedBy %></div>
+                  <div class="comment-text"><%= comment.text %></div>
+                  <div class="comment-timestamp"><%= comment.timeAgo %></div>
+
+                  <button type="button" class="reply-to-comment-btn" data-target-form-id="reply-form-<%= comment._id %>">Reply</button>
+
+                  <% if (comment.replies && comment.replies.length > 0) { %>
+                    <a href="javascript:void(0);" class="nested-replies-toggle" data-target-id="replies-<%= comment._id %>">
+                      Replies (<%= comment.replies.length %>)
+                      <span class="arrow">▼</span>
+                    </a>
+                  <% } %>
+
+                  <div id="replies-<%= comment._id %>" class="replies-section">
+                    <% if (comment.replies && comment.replies.length > 0) { %>
+                      <% comment.replies.forEach(reply => { %>
+                        <div class="reply">
+                          <div class="reply-meta"><%= reply.postedBy %></div>
+                          <div class="reply-text"><%= reply.text %></div>
+                          <div class="reply-timestamp"><%= reply.timeAgo %></div>
+                        </div>
+                      <% }) %>
+                    <% } else { %>
+                      <p>No replies yet.</p>
+                    <% } %>
+                  </div>
+
+                  <form action="/posts/<%= p._id %>/comments/<%= comment._id %>/reply" method="POST" class="reply-form nested-reply-form" id="reply-form-<%= comment._id %>">
+                    <input type="hidden" name="email" value="<%= email %>">
+                    <textarea name="replyText" placeholder="Reply to <%= comment.postedBy %>..." required></textarea>
+                    <button type="submit">Submit Reply</button>
+                  </form>
+
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p>No comments yet. Be the first to reply!</p>
+            <% } %>
+
+            <form action="/posts/<%= p._id %>/reply" method="POST" class="reply-form">
+              <input type="hidden" name="email" value="<%= email %>">
+              <textarea name="replyText" placeholder="Write a comment..." required></textarea>
+              <button type="submit">Post Comment</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p>No posts found in this category.</p>
+  <% } %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to toggle visibility of any section (comments or nested replies)
+      function toggleSection(button) {
+        const targetId = button.dataset.targetId;
+        const section = document.getElementById(targetId);
+        const arrow = button.querySelector('.arrow');
+
+        if (!section || !arrow) return; // Guard clause
+
+        if (section.style.display === 'none' || section.style.display === '') {
+          section.style.display = 'block';
+          arrow.classList.add('up');
+          arrow.innerHTML = '▲';
+        } else {
+          section.style.display = 'none';
+          arrow.classList.remove('up');
+          arrow.innerHTML = '▼';
+        }
+      }
+
+      // Event listeners for top-level comments toggle
+      document.querySelectorAll('.replies-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+          toggleSection(this);
+        });
+      });
+
+      // Event listeners for nested replies toggle (replies to comments)
+      document.querySelectorAll('.nested-replies-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+          toggleSection(this);
+        });
+      });
+
+      // Event listeners for "Reply" button on comments to show their specific reply form
+      document.querySelectorAll('.reply-to-comment-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const targetFormId = this.dataset.targetFormId;
+          const replyForm = document.getElementById(targetFormId);
+
+          if (replyForm) {
+            if (replyForm.style.display === 'none' || replyForm.style.display === '') {
+              replyForm.style.display = 'block';
+              this.textContent = 'Cancel Reply'; // Change button text
+            } else {
+              replyForm.style.display = 'none';
+              this.textContent = 'Reply'; // Change button text back
+            }
+          }
+        });
+      });
+
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create a New Post</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f0f2f5;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Create a New Post</h2>
+    <form action="/create-post" method="POST">
+      <input type="hidden" name="email" value="<%= email %>">
+
+      <label for="category">Post Type:</label>
+      <select name="category" id="category" required>
+        <option value="">Select</option>
+        <option value="success">Success Story</option>
+        <option value="job">Job Radar</option>
+        <option value="interview">Interview Wisdom</option>
+        <option value="internship">Post Internship</option>
+        <option value="mentorship">Mentorship Corner</option>
+      </select>
+
+      <label for="content">Content:</label>
+      <textarea name="content" id="content" rows="6" required placeholder="Write your post here..."></textarea>
+
+      <button type="submit">Post</button>
+    </form>
+  </div>
+</body>
+</html>

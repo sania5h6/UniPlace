@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All <%= type %> Posts</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    h1 { color: #333; }
+    .post {
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+    }
+    .timestamp {
+      font-size: 0.8em;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <h1>All <%= type.charAt(0).toUpperCase() + type.slice(1) %> Posts</h1>
+  <% if (posts.length === 0) { %>
+    <p>No posts found in this category.</p>
+  <% } else { %>
+    <% posts.forEach(post => { %>
+      <div class="post">
+        <h3><%= post.title %></h3>
+        <p><strong>By:</strong> <%= post.postedBy %></p>
+        <% if (post.company) { %>
+          <p><strong>Company:</strong> <%= post.company %> | <strong>Domain:</strong> <%= post.domain %> | <strong>Date:</strong> <%= post.date %></p>
+        <% } %>
+        <p><%= post.content %></p>
+        <p class="timestamp">Posted <%= post.timeAgo %></p>
+      </div>
+    <% }) %>
+  <% } %>
+  <a href="/dashboard">← Back to Dashboard</a>
+</body>
+</html>

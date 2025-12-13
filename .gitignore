@@ -1,0 +1,4 @@
+profile/node_modules/
+profile/.env
+node_modules/
+.env
