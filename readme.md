@@ -57,7 +57,7 @@ UniPlace is a centralized web-based platform designed to streamline college plac
 1. Clone the repository
 
    ```bash
-   git clone https://github.com/your-username/uniplace.git
+   git clone https://github.com/sania5h6/uniplace.git
    ```
 
 2. Navigate to the project directory
